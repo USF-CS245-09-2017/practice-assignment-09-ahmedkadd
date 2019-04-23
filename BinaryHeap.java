@@ -2,11 +2,13 @@ import java.util.Arrays;
 
 public class BinaryHeap {
 	
-	public int[] arr;
-	public int size;
+	private int maxSize;
+	private int[] arr;
+	private int size;
 	
 	public BinaryHeap() {
-		arr = new int[10];
+		maxSize = 10;
+		arr = new int[maxSize];
 		size = 0;
 	}
 	
@@ -16,7 +18,6 @@ public class BinaryHeap {
 	
 	private int leftChild(int index) {
 		return (2 * index + 1);
-		
 	}
 	
 	private int rightChild(int index) {
@@ -30,6 +31,11 @@ public class BinaryHeap {
 	}
 		
 	public void add(int num) {
+		if (size == maxSize) {
+			maxSize *= 2;
+			arr = Arrays.copyOf(arr, maxSize);
+		}
+		
 		arr[size++] = num;
 		
 		int current = size - 1;
@@ -41,6 +47,10 @@ public class BinaryHeap {
 	}
 	
 	public int remove() {
+		if (size == 0) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		
 		int min = arr[0];
 		arr[0] = arr[--size];
 		minHeapify(0);
@@ -59,15 +69,5 @@ public class BinaryHeap {
 				}
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		BinaryHeap heap = new BinaryHeap();
-		heap.add(3);
-		heap.add(2);
-		heap.add(1);
-		
-		System.out.println(Arrays.toString(heap.arr));
-		
 	}
 }
